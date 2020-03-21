@@ -8,4 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="product_display">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@android:color/background_dark</item>
+        <item name="android:textSize">30sp</item>
+    </style>
+
 </resources>

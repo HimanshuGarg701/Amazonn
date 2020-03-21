@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Amazonn</string>
+    <string name="product_image">Product Image</string>
+    <string name="product_name">Product Name</string>
+    <string name="price">Price</string>
+    <string name="search">Search Here</string>
 </resources>
