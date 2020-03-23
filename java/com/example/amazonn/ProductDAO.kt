@@ -1,9 +1,7 @@
 package com.example.amazonn
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.lifecycle.LiveData
+import androidx.room.*
 
 
 @Dao
@@ -15,11 +13,14 @@ interface ProductDAO {
     @Update
     fun update(product : Product)
 
+    @Delete
+    fun delete(product : Product)
+
     @Query("SELECT * FROM product_data WHERE productId = :key")
     fun getProduct(key : Long) : Product
 
     @Query("SELECT * FROM product_data ORDER BY productId")
-    fun getAllProducts()
+    fun getAllProducts() : LiveData<List<Product>>
 
     @Query("DELETE FROM product_data")
     fun deleteAll()
