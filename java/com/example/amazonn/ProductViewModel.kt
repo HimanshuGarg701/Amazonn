@@ -1,12 +1,15 @@
 package com.example.amazonn
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 
 
-class ProductViewModel : ViewModel() {
+class ProductViewModel(productDao : ProductDAO, application: Application) : AndroidViewModel(application) {
+
+    private lateinit var products : MutableList<Product>
 
     fun generateList(){
-        var products =  mutableListOf<Product>(
+         products =  mutableListOf<Product>(
             Product(0, "Bat", 10, "Used to play cricket"),
             Product(1, "Ball", 10, "Used to play cricket"),
             Product(2, "Bottle", 10, "Steel bottle to store hot water"),

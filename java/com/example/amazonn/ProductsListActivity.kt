@@ -16,7 +16,14 @@ class ProductsListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.recycler_view_products_list)
 
-        viewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
+        val application = requireNotNull(this).application
+
+        val productDao = ProductDatabase.getInstance(application).productDao
+
+        val viewModelFactory = ProductViewModelFactory(productDao, application)
+
+        val viewModelProduct = ViewModelProviders.of(this, viewModelFactory)
+                                                    .get(ProductViewModel::class.java)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
