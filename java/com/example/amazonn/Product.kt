@@ -16,6 +16,9 @@ data class Product(
     @ColumnInfo(name = "product_quantity")
     val quantity: Int,
 
+    @ColumnInfo(name = "product_price")
+    val price : Double,
+
     @ColumnInfo(name="product_description")
     val description : String) {
 }

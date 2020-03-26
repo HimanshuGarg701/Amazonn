@@ -1,14 +1,17 @@
 package com.example.amazonn
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.amazonn.databinding.ProductListItemBinding
 
-class ProductListAdapter(val products : ArrayList<Product>) : RecyclerView.Adapter<ProductViewHolder>(){
+class ProductListAdapter(private val products : ArrayList<Product>) : RecyclerView.Adapter<ProductListAdapter.ProductViewHolder>(){
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
-        val layout = LayoutInflater.from(parent.context).inflate(R.layout.product_list_item, parent, false)
-        return ProductViewHolder(layout)
+        val layoutInflate = LayoutInflater.from(parent.context)
+        val binding = ProductListItemBinding.inflate(layoutInflate, parent, false)
+        return ProductViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
@@ -16,10 +19,20 @@ class ProductListAdapter(val products : ArrayList<Product>) : RecyclerView.Adapt
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val product = products[position]
+        holder.bind(product)
+    }
+
+
+
+    class ProductViewHolder(binding: ProductListItemBinding) : RecyclerView.ViewHolder(binding.root){
+        private val productName = binding.productName
+        private val productPrice = binding.productPrice
+
+        fun bind(product: Product) {
+            productName.text = product.name
+            productPrice.text = product.price.toString()
+        }
     }
 }
 
-class ProductViewHolder(view : View) : RecyclerView.ViewHolder(view){
-
-}

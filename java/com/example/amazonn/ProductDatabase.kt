@@ -21,7 +21,7 @@ abstract class ProductDatabase : RoomDatabase() {
                 if(instance == null){
                     instance = Room.databaseBuilder(context.applicationContext,
                                                     ProductDatabase::class.java,
-                                            "product_database")
+                                            "products_database")
 
                         .fallbackToDestructiveMigration()
                         .build()
