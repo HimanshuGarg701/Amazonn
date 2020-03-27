@@ -1,23 +1,49 @@
 package com.example.amazonn
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 
 
-class ProductViewModel() : ViewModel() {
+class ProductViewModel(private val productDao : ProductDAO, application: Application) : AndroidViewModel(application) {
 
     lateinit var products : ArrayList<Product>
 
-    init{
-        generateList()
+    private val viewModelJob = Job()
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
     }
 
+    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
+    var product = MutableLiveData<Product>()
+
+
+    init{
+        Log.d("EnteredViewModel", "ENTERING?")
+        generateList()
+        initializeDatabase(products)
+    }
+    var allProducts = productDao.getAllProducts()
+
+    private fun initializeDatabase(products : ArrayList<Product>){
+        uiScope.launch {
+            for(product in products){
+                insert(product)
+            }
+        }
+    }
+
+    private suspend fun insert(product : Product){
+        withContext(Dispatchers.IO){
+            productDao.insert(product)
+        }
+    }
 
     private fun generateList(){
          products =  arrayListOf<Product>(

@@ -3,32 +3,48 @@ package com.example.amazonn
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.example.amazonn.databinding.RecyclerViewProductsListBinding
 import kotlinx.android.synthetic.main.recycler_view_products_list.*
 
 class ProductsListActivity : AppCompatActivity() {
 
     private lateinit var viewModelProduct : ProductViewModel
+    private lateinit var binding : RecyclerViewProductsListBinding
+    private lateinit var products : ArrayList<Product>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.recycler_view_products_list)
+        //setContentView(R.layout.recycler_view_products_list)
 
-//        val application = requireNotNull(this).application
-//
-//        val productDao = ProductDatabase.getInstance(application).productDao
-//
-//        val viewModelFactory = ProductViewModelFactory(productDao, application)
-//
-//         viewModelProduct = ViewModelProviders.of(this, viewModelFactory)
-//                                                    .get(ProductViewModel::class.java)
+        binding = DataBindingUtil.setContentView(this, R.layout.recycler_view_products_list)
 
-        viewModelProduct = ViewModelProviders.of(this).get(ProductViewModel::class.java)
-        val adapter = ProductListAdapter(viewModelProduct.products)
+        val application = requireNotNull(this).application
+
+        val productDao = ProductDatabase.getInstance(application).productDao
+
+        val viewModelFactory = ProductViewModelFactory(productDao, application)
+        Log.d("BeforeViewModel", "Before")
+         viewModelProduct = ViewModelProviders.of(this, viewModelFactory)
+                                                    .get(ProductViewModel::class.java)
+        Log.d("BeforeViewModel", "After View Model Created")
+
+        //viewModelProduct = ViewModelProviders.of(this).get(ProductViewModel::class.java)
+        viewModelProduct.allProducts.observe(this, Observer {
+            products = it as ArrayList<Product>
+        })
+
+        val adapter = ProductListAdapter(products)
         recyclerProductList.adapter = adapter
+
+        binding.productViewModel = viewModelProduct
+        binding.lifecycleOwner = this
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
