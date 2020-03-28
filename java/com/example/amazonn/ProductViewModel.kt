@@ -6,40 +6,39 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.IO
 
 
 class ProductViewModel(private val productDao : ProductDAO, application: Application) : AndroidViewModel(application) {
 
     lateinit var products : ArrayList<Product>
-
     private val viewModelJob = Job()
 
-    override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
-    }
 
-    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+    private val uiScope = CoroutineScope(IO + viewModelJob)
 
-    var product = MutableLiveData<Product>()
+    //var product = MutableLiveData<Product>()
 
 
     init{
         Log.d("EnteredViewModel", "ENTERING?")
         generateList()
-        initializeDatabase(products)
+        //initializeDatabase(products)
+        //viewModelJob.complete()
     }
-    var allProducts = productDao.getAllProducts()
+    //var allProducts = productDao.getAllProducts()
 
     private fun initializeDatabase(products : ArrayList<Product>){
         uiScope.launch {
             for(product in products){
                 insert(product)
             }
+            //insert(Product(12, "Shirt", 20, 15.0, "Funky zara"))
         }
     }
 
     private suspend fun insert(product : Product){
+        Log.d("InsertProduct", "Added product to database")
         withContext(Dispatchers.IO){
             productDao.insert(product)
         }
@@ -58,5 +57,6 @@ class ProductViewModel(private val productDao : ProductDAO, application: Applica
             Product(8, "Television", 10, 1005.0,"Watch all movies and shows on big screen"),
             Product(9, "Leather Jacket", 10, 105.0,"Look cool with the all new leather jacket collection")
         )
+        Log.d("ViewModelEntered", "Generated List")
     }
 }

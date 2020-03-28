@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.amazonn.databinding.RecyclerViewProductsListBinding
 import kotlinx.android.synthetic.main.recycler_view_products_list.*
 
+@Suppress("DEPRECATION")
 class ProductsListActivity : AppCompatActivity() {
 
     private lateinit var viewModelProduct : ProductViewModel
@@ -22,24 +23,29 @@ class ProductsListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.recycler_view_products_list)
-
+        Log.d("ProductListActivity", "Before Data Binding")
         binding = DataBindingUtil.setContentView(this, R.layout.recycler_view_products_list)
 
+        Log.d("ProductListActivity", "After data binding")
         val application = requireNotNull(this).application
+        Log.d("ProductListActivity", "After application created")
 
         val productDao = ProductDatabase.getInstance(application).productDao
+        Log.d("ProductListActivity", "Created Product DAO Object")
+
 
         val viewModelFactory = ProductViewModelFactory(productDao, application)
-        Log.d("BeforeViewModel", "Before")
-         viewModelProduct = ViewModelProviders.of(this, viewModelFactory)
-                                                    .get(ProductViewModel::class.java)
-        Log.d("BeforeViewModel", "After View Model Created")
+        Log.d("ProductListActivity", "Before")
+         viewModelProduct = ViewModelProviders.of(this, viewModelFactory).get(ProductViewModel::class.java)
+
 
         //viewModelProduct = ViewModelProviders.of(this).get(ProductViewModel::class.java)
-        viewModelProduct.allProducts.observe(this, Observer {
-            products = it as ArrayList<Product>
-        })
-
+        Log.d("ProductListActivity", "After View Model Created")
+//        viewModelProduct.allProducts.observe(this, Observer {
+//            products = it as ArrayList<Product>
+//        })
+        products = viewModelProduct.products
+        //Log.d("ProductListActivity", "${products.toString()}")
         val adapter = ProductListAdapter(products)
         recyclerProductList.adapter = adapter
 
