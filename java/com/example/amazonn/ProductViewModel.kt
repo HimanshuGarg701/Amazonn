@@ -7,9 +7,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
+import java.lang.Exception
 
 
-class ProductViewModel(private val productDao : ProductDAO, application: Application) : AndroidViewModel(application) {
+class ProductViewModel(private val productDao : ProductDAO, application: Application) : ViewModel() {
 
     lateinit var products : ArrayList<Product>
     private val viewModelJob = Job()
@@ -19,19 +20,37 @@ class ProductViewModel(private val productDao : ProductDAO, application: Applica
 
     //var product = MutableLiveData<Product>()
 
+    var allProducts : List<Product> = arrayListOf(Product(25, "Bat", 10, 100.0, "Used to play cricket"))
 
     init{
-        Log.d("EnteredViewModel", "ENTERING?")
+        Log.d("TheErrorOfDao", "ENTERING?")
         generateList()
-        //initializeDatabase(products)
-        //viewModelJob.complete()
+        initializeDatabase(products)
+        launchProducts()
+        viewModelJob.cancel()
+
     }
-    //var allProducts = productDao.getAllProducts()
+
+    private fun launchProducts(){
+        try {
+            uiScope.launch {
+                withContext(Dispatchers.IO) {
+                    allProducts = productDao.getAllProducts()
+                    Log.d("TheErrorOfDao", allProducts.toString())
+                }
+            }
+        }catch(e : Exception){
+            Log.d("TheErrorOfDao", "${e.message}")
+        }
+    }
+
 
     private fun initializeDatabase(products : ArrayList<Product>){
         uiScope.launch {
+            Log.d("TheErrorOfDao", "Entering Loop")
             for(product in products){
                 insert(product)
+               Log.d("TheErrorOfDao", product.toString())
             }
             //insert(Product(12, "Shirt", 20, 15.0, "Funky zara"))
         }

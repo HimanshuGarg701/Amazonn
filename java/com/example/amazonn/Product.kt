@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "product_data")
 data class Product(
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     val productId : Long,
 
     @ColumnInfo(name = "product_name")

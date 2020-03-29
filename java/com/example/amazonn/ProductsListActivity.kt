@@ -44,7 +44,7 @@ class ProductsListActivity : AppCompatActivity() {
 //        viewModelProduct.allProducts.observe(this, Observer {
 //            products = it as ArrayList<Product>
 //        })
-        products = viewModelProduct.products
+        products = viewModelProduct.allProducts as ArrayList<Product>
         //Log.d("ProductListActivity", "${products.toString()}")
         val adapter = ProductListAdapter(products)
         recyclerProductList.adapter = adapter

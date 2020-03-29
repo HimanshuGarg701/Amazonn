@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import java.lang.IllegalArgumentException
 
+@Suppress("UNCHECKED_CAST")
 class ProductViewModelFactory(private val productDao : ProductDAO,
                               private val application: Application) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
