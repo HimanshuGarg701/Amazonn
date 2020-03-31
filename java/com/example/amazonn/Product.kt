@@ -20,5 +20,8 @@ data class Product(
     val price : Double,
 
     @ColumnInfo(name="product_description")
-    val description : String) {
+    val description : String,
+
+    @ColumnInfo(name="image_url")
+    val imageURL : String){
 }

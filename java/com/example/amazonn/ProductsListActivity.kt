@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.example.amazonn.databinding.RecyclerViewProductsListBinding
 import kotlinx.android.synthetic.main.recycler_view_products_list.*
+import java.lang.Exception
 
 @Suppress("DEPRECATION")
 class ProductsListActivity : AppCompatActivity() {
@@ -47,8 +48,17 @@ class ProductsListActivity : AppCompatActivity() {
         products = viewModelProduct.allProducts as ArrayList<Product>
         //Log.d("ProductListActivity", "${products.toString()}")
         val adapter = ProductListAdapter(products)
-        recyclerProductList.adapter = adapter
+        binding.recyclerProductList.adapter = adapter
 
+
+        binding.addProduct.setOnClickListener {
+            try{
+            val intent = Intent(this, AddProductActivity::class.java)
+            startActivity(intent)}
+            catch(e : Exception){
+                Log.d("ErrorOfProduct", e.message)
+            }
+        }
         binding.productViewModel = viewModelProduct
         binding.lifecycleOwner = this
     }
@@ -65,6 +75,6 @@ class ProductsListActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
-        return onOptionsItemSelected(item)
+        return super.onOptionsItemSelected(item)
     }
 }

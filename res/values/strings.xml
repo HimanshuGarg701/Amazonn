@@ -5,4 +5,8 @@
     <string name="price">Price</string>
     <string name="search">Search Here</string>
     <string name="shopping_cart">Shopping Cart</string>
+    <string name="add_product">ADD PRODUCT</string>
+    <string name="add_pic">Add Picture</string>
+    <string name="description">Description</string>
+    <string name="submit_product">Submit Product</string>
 </resources>
